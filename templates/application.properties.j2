@@ -1,0 +1,105 @@
+elefana.node.name={{ ef_node_name }}
+elefana.cluster.name={{ ef_cluster_name }}
+
+# HTTP bind address
+elefana.http.address={{ ef_http_address }}
+elefana.http.port={{ ef_http_port }}
+
+# Enable GZIP compression
+elefana.http.gzip={{ ef_http_gzip }}
+# Maximum HTTP requests/responses per HTTP pipeline queue, 0 disables pipelining
+elefana.http.maxEvents={{ ef_http_max_events }}
+# Maximum HTTP payload size (in bytes)
+elefana.http.maxPayloadSize={{ ef_http_max_payload_size }}
+
+# Elasticsearch API compatibility version
+# 2 = Elasticsearch 2.x compatibility
+# 5 = Elasticsearch 5.x compatibility
+elefana.esCompatVersion={{ ef_es_compat_version }}
+
+# True if citus extension is used in postgres
+elefana.citus.enabled={{ ef_citus_enabled }}
+
+{% if ef_citus_enabled == 'true' %}
+# Citus coordinator node information
+# Note: The host/port must be the same host/port that workers use to communicate with the coordinator node
+elefana.citus.coordinator.host={{ ef_citus_coordinator_host }}
+elefana.citus.coordinator.port={{ ef_citus_coordinator_port }}
+# Set to true to override auto-detection of local elefana node's direct connection to coordinator
+#elefana.citus.coordinator.direct={{ ef_citus_coordinator_direct_connection }}
+{% endif %}
+
+# Bulk requests will be split across multiple PSQL connections
+elefana.bulkParallelisation={{ ef_bulk_parallelisation }}
+# Frequency of when field stats should be refreshed (in milliseconds)
+elefana.fieldStatsInterval={{ ef_field_stats_interval }}
+# Frequency of when mappings should be refreshed (in milliseconds)
+elefana.mappingInterval={{ ef_mapping_interval }}
+# Percentage of total rows to sample for mapping - increase/decrease based on total documents per index
+elefana.mappingSampleSize={{ ef_mapping_sample_size }}
+# If bernoulli sampling returns 0 rows, fallback to the first N entries as a sample
+elefana.fallbackMappingSampleSize={{ ef_mapping_fallback_sample_size }}
+# Number of BRIN pages for BRIN index on timestamp ranges. Smaller values increase the accuracy of the index at cost of storage.
+elefana.brinPagesPerRange={{ ef_brin_pages_per_range }}
+# Interval to clean up temporary tables (in milliseconds)
+elefana.gcInterval={{ ef_gc_interval }}
+
+# Metrics output target; noop, console or graphite
+elefana.metrics.reporter={{ ef_metrics_reporter }}
+# Metrics reporting frequency (seconds)
+elefana.metrics.frequency={{ ef_metrics_frequency }}
+
+{% if ef_metrics_reporter == 'graphite' %}
+elefana.metrics.graphite.prefix={{ ef_metrics_graphite_prefix }}
+elefana.metrics.graphite.host={{ ef_metrics_graphite_host }}
+elefana.metrics.graphite.port={{ ef_metrics_graphite_port }}
+{% endif %}
+
+logging.path={{ ef_logging_path }}
+
+spring.datasource.url=jdbc:postgresql://{{ ef_pg_host }}:{{ ef_pg_port }}/{{ ef_pg_database_name }}
+spring.datasource.username={{ ef_pg_username }}
+spring.datasource.password={{ ef_pg_password }}
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.hikari.connection-timeout={{ ef_pg_connections_timeout }}
+spring.datasource.hikari.minimum-idle={{ ef_pg_connections_min_idle }}
+spring.datasource.hikari.maximum-pool-size={{ ef_pg_connections_max_pool_size }}
+spring.datasource.tomcat.test-while-idle=true
+spring.datasource.tomcat.test-on-borrow=true
+spring.datasource.tomcat.validation-query=SELECT NOW();
+spring.datasource.tomcat.validation-interval={{ ef_pg_connections_validation_interval }}
+
+# Bulk ingests data into one or more tablespaces. Note: tablespaces must already exist
+elefana.service.bulk.tablespaces={{ ef_api_bulk_ingest_tablespaces }}
+# Determines no. of concurrently processed requests to bulk API
+# Defaults to no. of cores when set to less than 1 or value is commented out
+elefana.service.bulk.ingest.threads={{ ef_api_bulk_ingest_threads }}
+# Determines no. of concurrently processed data for bulk indexing
+# Defaults to no. of cores when set to less than 1 or value is commented out
+elefana.service.bulk.index.threads={{ ef_api_bulk_index_threads }}
+# Determines no. of concurrently processed requests to cluster info API
+# Defaults to 2 when commented out
+elefana.service.cluster.threads={{ ef_api_cluster_threads }}
+# Determines no. of concurrently processed requests to document API
+# Defaults to no. of cores when commented out
+elefana.service.document.threads={{ ef_api_document_threads }}
+# Store documents across one or more tablespaces. Note: tablespaces must already exist
+elefana.service.document.tablespaces={{ ef_api_document_tablespaces }}
+# Determines no. of concurrently processed requests to field mapping/stats APIs
+# Defaults to 2 when commented out
+elefana.service.field.threads={{ ef_api_field_threads }}
+# Determines no. of concurrently processed requests to node info API
+# Defaults to 2 when commented out
+elefana.service.node.threads={{ ef_api_node_threads }}
+# Determines no. of concurrently processed count queries via search API
+# Defaults to no. of cores when commented out
+elefana.service.search.count.threads={{ ef_api_search_count_threads }}
+# Determines no. of concurrently processed hits queries via search API
+# Defaults to no. of cores when commented out
+elefana.service.search.hits.threads={{ ef_api_search_hits_threads }}
+# Determines no. of concurrently processed aggregations via search API
+# Defaults to no. of cores when commented out
+elefana.service.search.aggregation.threads={{ ef_api_search_aggregation_threads }}
+# Determines no. of concurrently processed requests to template API
+# Defaults to no. of cores when commented out
+elefana.service.template.threads={{ ef_api_template_threads }}

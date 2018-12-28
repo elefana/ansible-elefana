@@ -1,0 +1,29 @@
+---
+- name: RedHat - set fact ef_allow_downgrade to no
+  set_fact: ef_allow_downgrade=no
+
+- name: RedHat - set fact ef_allow_downgrade to yes
+  set_fact: ef_allow_downgrade=yes
+  when: ef_allow_downgrades
+
+- name: RedHat - set fact ef_allow_downgrade to yes
+  set_fact: ef_rpm_url={{ ef_install_package_url }}/redhat/{{ ef_package_name }}-{{ ef_version }}.{{ ansible_architecture }}.rpm
+  when: ef_allow_downgrades
+
+- name: RedHat - Install Elefana from local repo
+  become: yes
+  yum:
+    name: '{{ ef_package_name }}-{{ ef_version }}'
+    state: present
+    update_cache: yes
+    allow_downgrade: '{{ ef_allow_downgrade }}'
+  when: ef_install_from_local_repo
+  notify: restart elefana
+  retries: 5
+  delay: 10
+
+- name: RedHat - Install Elefana from URL
+  become: yes
+  yum: name={{ ef_rpm_url }} state=present
+  when: not ef_install_from_local_repo
+  notify: restart elefana

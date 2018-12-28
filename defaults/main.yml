@@ -1,2 +1,59 @@
 ---
-# defaults file for ansible-elefana
+ef_package_name: 'elefana'
+ef_version: 1.0.0-rc.1
+ef_es_compat_version: 2
+ef_allow_downgrades: false
+ef_restart_on_change: true
+ef_start_service: true
+
+ef_node_name: {{ ansible_hostname }}
+ef_cluster_name: example-cluster
+ef_logging_path: '/var/log/elefana/'
+
+ef_install_from_local_repo: false
+ef_install_package_url: 'https://elefana.com/repo/'
+
+ef_pg_database_name: 'elefana'
+ef_pg_host: '127.0.0.1'
+ef_pg_port: 5432
+ef_pg_username: 'postgres'
+ef_pg_password: 'postgres'
+ef_pg_connections_timeout: 10000
+ef_pg_connections_min_idle: 5
+ef_pg_connections_max_pool_size: 20
+ef_pg_connections_validation_interval: 30000
+
+ef_http_address: '127.0.0.1'
+ef_http_port: 9200
+ef_http_gzip: 'true'
+ef_http_max_events: 0
+ef_http_max_payload_size: 104857600
+
+ef_citus_enabled: 'false'
+ef_citus_coordinator_host: '127.0.0.1'
+ef_citus_coordinator_port: 5432
+ef_citus_coordinator_direct_connection: 'true'
+
+ef_bulk_parallelisation: {{ ansible_processor_cores }}
+ef_field_stats_interval: 60000
+ef_mapping_interval: 60000
+ef_mapping_sample_size: '0.00001'
+ef_mapping_fallback_sample_size: 100
+ef_brin_pages_per_range: 128
+ef_gc_interval: 10000
+
+ef_metrics_reporter: 'noop'
+ef_metrics_frequency: 1000
+
+ef_api_bulk_ingest_tablespaces: ''
+ef_api_bulk_ingest_threads: {{ ansible_processor_cores }}
+ef_api_bulk_index_threads: {{ ansible_processor_cores }}
+ef_api_cluster_threads: 2
+ef_api_document_threads: {{ ansible_processor_cores }}
+ef_api_document_tablespaces: ''
+ef_api_field_threads: 2
+ef_api_node_threads: 2
+ef_api_search_count_threads: {{ ansible_processor_cores }}
+ef_api_search_hits_threads: {{ ansible_processor_cores }}
+ef_api_search_aggregation_threads: {{ ansible_processor_cores }}
+ef_api_template_threads: 2

@@ -1,2 +1,8 @@
 ---
-# tasks file for ansible-elefana
+- name: Install Elefana
+  include: elefana-redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure Elefana
+  become: yes
+  template: src=application.properties.j2 dest=/etc/elefana/application.properties owner=elefana group=elefana mode=0644 force=yes
